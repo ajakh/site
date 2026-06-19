@@ -15,16 +15,37 @@
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", function () {
-  // ---- Site menu (hamburger) ----
+  // ---- Site menu (compact dropdown under the header) ----
   var navToggle = document.querySelector(".nav-toggle");
   var siteMenu = document.querySelector(".site-menu");
+  var menuClose = document.querySelector(".menu-close");
+
+  function openMenu() {
+    siteMenu.classList.add("is-open");
+    navToggle.setAttribute("aria-expanded", "true");
+  }
+  function closeMenu() {
+    siteMenu.classList.remove("is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+  }
 
   if (navToggle && siteMenu) {
-    navToggle.addEventListener("click", function () {
-      var isOpen = siteMenu.classList.toggle("is-open");
-      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    navToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var isOpen = siteMenu.classList.contains("is-open");
+      if (isOpen) { closeMenu(); } else { openMenu(); }
     });
   }
+  if (menuClose) { menuClose.addEventListener("click", closeMenu); }
+
+  // Click anywhere outside the open menu closes it (replaces a fixed
+  // full-screen backdrop, since the menu is a compact dropdown now,
+  // not a screen-locking overlay).
+  document.addEventListener("click", function (e) {
+    if (siteMenu && siteMenu.classList.contains("is-open") && !siteMenu.contains(e.target)) {
+      closeMenu();
+    }
+  });
 
   // ---- Search overlay ----
   var searchToggle = document.querySelector(".search-toggle");
