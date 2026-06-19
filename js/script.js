@@ -15,16 +15,33 @@
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", function () {
-  // ---- Site menu (hamburger) ----
+  // ---- Site menu (off-canvas drawer) ----
   var navToggle = document.querySelector(".nav-toggle");
   var siteMenu = document.querySelector(".site-menu");
+  var menuBackdrop = document.querySelector(".menu-backdrop");
+  var menuClose = document.querySelector(".menu-close");
 
-  if (navToggle && siteMenu) {
+  function openMenu() {
+    siteMenu.classList.add("is-open");
+    menuBackdrop.classList.add("is-open");
+    document.body.classList.add("menu-open");
+    navToggle.setAttribute("aria-expanded", "true");
+  }
+  function closeMenu() {
+    siteMenu.classList.remove("is-open");
+    menuBackdrop.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
+    navToggle.setAttribute("aria-expanded", "false");
+  }
+
+  if (navToggle && siteMenu && menuBackdrop) {
     navToggle.addEventListener("click", function () {
-      var isOpen = siteMenu.classList.toggle("is-open");
-      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      var isOpen = siteMenu.classList.contains("is-open");
+      if (isOpen) { closeMenu(); } else { openMenu(); }
     });
   }
+  if (menuBackdrop) { menuBackdrop.addEventListener("click", closeMenu); }
+  if (menuClose) { menuClose.addEventListener("click", closeMenu); }
 
   // ---- Search overlay ----
   var searchToggle = document.querySelector(".search-toggle");
