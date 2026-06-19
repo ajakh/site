@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="css/style.css?v=4" />
+<link rel="stylesheet" href="css/style.css?v=5" />
 
 <!-- Google AdSense — Auto ads -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8263822632631955" crossorigin="anonymous"></script>
@@ -84,30 +84,37 @@
     </div>
   </div>
 
-  <!-- Site menu: floats as a card over the page below the header, doesn't push content down.
-       On mobile it shows categories + utility links (categories aren't visible elsewhere).
-       On desktop it shows only the utility links, since categories are already in the nav above. -->
+  <!-- Site menu: mobile-only slide-in drawer (categories already show in the
+       top nav on desktop, so no menu is needed there at all). -->
+  <div class="menu-backdrop" id="menuBackdrop"></div>
   <div class="site-menu" id="siteMenu">
-    <div class="wrap">
-      <nav aria-label="Site menu">
-        <ul class="site-menu__primary">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="#">AI</a></li>
-          <li><a href="#">Security</a></li>
-          <li><a href="#">Crypto</a></li>
-          <li><a href="#">Web Dev</a></li>
-          <li><a href="#">Reviews</a></li>
-          <li><a href="#">Finance</a></li>
-        </ul>
-        <ul class="site-menu__secondary">
-          <li><a href="https://www.itcharging.com/our-team/">Our Team</a></li>
-          <li><a href="https://www.itcharging.com/contact-us/">Contact Us</a></li>
-          <li><a href="#newsletter">Newsletter</a></li>
-          <li><a href="https://www.itcharging.com/privacy-policy/">Privacy Policy</a></li>
-          <li><a href="https://www.itcharging.com/terms-and-conditions/">Terms and Conditions</a></li>
-        </ul>
-      </nav>
+    <div class="site-menu__head">
+      <a class="brand" href="index.html">
+        <img src="https://www.itcharging.com/wp-content/uploads/2025/05/logo-itc.png" alt="IT Charging logo" />
+        <span class="brand__name">IT Charging</span>
+      </a>
+      <button class="icon-btn menu-close" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
     </div>
+    <nav class="site-menu__scroll" aria-label="Site menu">
+      <ul class="site-menu__primary">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">AI</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Crypto</a></li>
+        <li><a href="#">Web Dev</a></li>
+        <li><a href="#">Reviews</a></li>
+        <li><a href="#">Finance</a></li>
+      </ul>
+      <ul class="site-menu__secondary">
+        <li><a href="https://www.itcharging.com/our-team/">Our Team</a></li>
+        <li><a href="https://www.itcharging.com/contact-us/">Contact Us</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+        <li><a href="https://www.itcharging.com/privacy-policy/">Privacy Policy</a></li>
+        <li><a href="https://www.itcharging.com/terms-and-conditions/">Terms and Conditions</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
