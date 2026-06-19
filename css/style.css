@@ -55,7 +55,6 @@ body {
   max-width: 100vw;
 }
 img { max-width: 100%; display: block; }
-body.menu-open { overflow: hidden; }
 a { color: inherit; text-decoration: none; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
@@ -130,39 +129,38 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); }
 .search-close:hover { background: var(--color-paper); }
 .search-close svg { width: 18px; height: 18px; color: var(--color-ink); }
 
-/* ---------- site menu (mobile-only off-canvas drawer) ---------- */
-.menu-backdrop {
-  display: none; position: fixed; inset: 0; background: rgba(13,14,16,0.5);
-  z-index: 150; opacity: 0; transition: opacity var(--t-lift);
-}
-.menu-backdrop.is-open { display: block; opacity: 1; }
-
+/* ---------- site menu (mobile-only compact dropdown) ----------
+   Anchored just below the header (header is position:sticky, so this
+   sits naturally under it and scrolls away with the page like normal
+   content — it is NOT a fixed full-screen overlay). Height is auto,
+   sized exactly to its links, with a max-height safety net in case
+   the link list ever grows long on a short screen. */
 .site-menu {
-  position: fixed; top: 0; left: 0; bottom: 0; width: 82vw; max-width: 320px;
-  background: var(--color-white); z-index: 160;
-  transform: translateX(-100%); transition: transform var(--t-lift);
-  display: flex; flex-direction: column;
-  box-shadow: 12px 0 28px rgba(13,14,16,0.18);
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: var(--color-white); border-bottom: 1px solid var(--color-hairline);
+  box-shadow: var(--shadow-lift); z-index: 90;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height var(--t-lift), opacity var(--t-lift);
 }
-.site-menu.is-open { transform: translateX(0); }
+.site-menu.is-open { max-height: 80vh; opacity: 1; overflow-y: auto; }
 
 .site-menu__head {
   display: flex; align-items: center; justify-content: space-between;
-  height: 64px; padding: 0 1.1rem; border-bottom: 1px solid var(--color-hairline); flex-shrink: 0;
+  height: 52px; padding: 0 1.1rem; border-bottom: 1px solid var(--color-hairline); flex-shrink: 0;
 }
-.site-menu__title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; letter-spacing: 0.01em; text-transform: uppercase; color: var(--color-slate); }
+.site-menu__title { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-slate); }
 .site-menu__head .menu-close { margin-left: auto; }
 
-.site-menu__scroll { flex: 1 1 auto; overflow-y: auto; padding: 1rem 1.1rem 2rem; }
-.site-menu ul { display: flex; flex-direction: column; gap: 0.1rem; }
-.site-menu a { display: block; padding: 0.75rem 0.3rem; font-weight: 600; font-size: 0.97rem; border-radius: var(--radius-sm); transition: color var(--t-fast), background var(--t-fast); }
+.site-menu__scroll { padding: 0.6rem 1.1rem 1rem; }
+.site-menu ul { display: flex; flex-direction: column; gap: 0.05rem; }
+.site-menu a { display: block; padding: 0.65rem 0.3rem; font-weight: 600; font-size: 0.95rem; border-radius: var(--radius-sm); transition: color var(--t-fast), background var(--t-fast); }
 .site-menu a:hover { color: var(--color-red); background: var(--color-paper); }
-.site-menu__primary a { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; }
-.site-menu__secondary { border-top: 1px solid var(--color-hairline); padding-top: 0.6rem; margin-top: 0.6rem; }
+.site-menu__primary a { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+.site-menu__secondary { border-top: 1px solid var(--color-hairline); padding-top: 0.5rem; margin-top: 0.5rem; }
 
 /* No menu at all on desktop — categories are already in the visible top nav */
 @media (min-width: 901px) {
-  .menu-backdrop, .site-menu { display: none !important; }
+  .site-menu { display: none !important; }
 }
 
 /* ---------- shared thumbnail treatment (visual cohesion across mixed-quality images) ---------- */
