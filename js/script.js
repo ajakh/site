@@ -15,33 +15,37 @@
 // ============================================================
 
 document.addEventListener("DOMContentLoaded", function () {
-  // ---- Site menu (off-canvas drawer) ----
+  // ---- Site menu (compact dropdown under the header) ----
   var navToggle = document.querySelector(".nav-toggle");
   var siteMenu = document.querySelector(".site-menu");
-  var menuBackdrop = document.querySelector(".menu-backdrop");
   var menuClose = document.querySelector(".menu-close");
 
   function openMenu() {
     siteMenu.classList.add("is-open");
-    menuBackdrop.classList.add("is-open");
-    document.body.classList.add("menu-open");
     navToggle.setAttribute("aria-expanded", "true");
   }
   function closeMenu() {
     siteMenu.classList.remove("is-open");
-    menuBackdrop.classList.remove("is-open");
-    document.body.classList.remove("menu-open");
     navToggle.setAttribute("aria-expanded", "false");
   }
 
-  if (navToggle && siteMenu && menuBackdrop) {
-    navToggle.addEventListener("click", function () {
+  if (navToggle && siteMenu) {
+    navToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
       var isOpen = siteMenu.classList.contains("is-open");
       if (isOpen) { closeMenu(); } else { openMenu(); }
     });
   }
-  if (menuBackdrop) { menuBackdrop.addEventListener("click", closeMenu); }
   if (menuClose) { menuClose.addEventListener("click", closeMenu); }
+
+  // Click anywhere outside the open menu closes it (replaces a fixed
+  // full-screen backdrop, since the menu is a compact dropdown now,
+  // not a screen-locking overlay).
+  document.addEventListener("click", function (e) {
+    if (siteMenu && siteMenu.classList.contains("is-open") && !siteMenu.contains(e.target)) {
+      closeMenu();
+    }
+  });
 
   // ---- Search overlay ----
   var searchToggle = document.querySelector(".search-toggle");
