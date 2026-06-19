@@ -129,7 +129,7 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); }
 .search-close svg { width: 18px; height: 18px; color: var(--color-ink); }
 
 /* ---------- site menu (hamburger panel: categories + utility links) ---------- */
-.site-menu { display: none; position: absolute; top: 100%; left: 0; right: 10; background: var(--color-white); border-bottom: 1px solid var(--color-hairline); box-shadow: var(--shadow-lift); border-radius: 0 0 var(--radius) var(--radius); z-index: 80; }
+.site-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-white); border-bottom: 1px solid var(--color-hairline); box-shadow: var(--shadow-lift); border-radius: 0 0 var(--radius) var(--radius); z-index: 80; }
 .site-menu.is-open { display: block; }
 .site-menu .wrap { padding: 1.4rem 1.5rem 1.7rem; display: flex; gap: 2.4rem; flex-wrap: wrap; }
 .site-menu ul { display: flex; flex-direction: column; gap: 0.3rem; min-width: 160px; }
