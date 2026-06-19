@@ -102,4 +102,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // ---- Copy link button (article pages) ----
+  var copyLinkBtn = document.getElementById("copyLinkBtn");
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener("click", function () {
+      var url = window.location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function () {
+          copyLinkBtn.classList.add("is-copied");
+          setTimeout(function () { copyLinkBtn.classList.remove("is-copied"); }, 1800);
+        }).catch(function () {
+          console.log("Couldn't copy automatically — copy the URL from the address bar instead.");
+        });
+      }
+    });
+  }
 });
