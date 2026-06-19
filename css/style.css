@@ -55,6 +55,7 @@ body {
   max-width: 100vw;
 }
 img { max-width: 100%; display: block; }
+body.menu-open { overflow: hidden; }
 a { color: inherit; text-decoration: none; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
@@ -111,6 +112,7 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); }
 
 .nav-toggle { display: inline-flex; width: 46px; height: 46px; flex-shrink: 0; }
 .nav-toggle svg { width: 24px; height: 24px; }
+@media (min-width: 901px) { .nav-toggle { display: none; } }
 
 /* Search overlays the header bar itself instead of pushing a new row below it */
 .search-panel {
@@ -128,19 +130,39 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); }
 .search-close:hover { background: var(--color-paper); }
 .search-close svg { width: 18px; height: 18px; color: var(--color-ink); }
 
-/* ---------- site menu (hamburger panel: categories + utility links) ---------- */
-.site-menu { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-white); border-bottom: 1px solid var(--color-hairline); box-shadow: var(--shadow-lift); border-radius: 0 0 var(--radius) var(--radius); z-index: 80; }
-.site-menu.is-open { display: block; }
-.site-menu .wrap { padding: 1.4rem 1.5rem 1.7rem; display: flex; gap: 2.4rem; flex-wrap: wrap; }
-.site-menu ul { display: flex; flex-direction: column; gap: 0.3rem; min-width: 160px; }
-.site-menu a { display: block; padding: 0.5rem 0; font-weight: 600; font-size: 0.92rem; transition: color var(--t-fast); }
-.site-menu a:hover { color: var(--color-red); }
-.site-menu__primary a { font-family: var(--font-display); font-weight: 700; }
+/* ---------- site menu (mobile-only off-canvas drawer) ---------- */
+.menu-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(13,14,16,0.5);
+  z-index: 150; opacity: 0; transition: opacity var(--t-lift);
+}
+.menu-backdrop.is-open { display: block; opacity: 1; }
 
-/* Desktop: categories already live in the visible nav above, so the
-   menu only needs to surface the secondary/utility links */
+.site-menu {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 82vw; max-width: 320px;
+  background: var(--color-white); z-index: 160;
+  transform: translateX(-100%); transition: transform var(--t-lift);
+  display: flex; flex-direction: column;
+  box-shadow: 12px 0 28px rgba(13,14,16,0.18);
+}
+.site-menu.is-open { transform: translateX(0); }
+
+.site-menu__head {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px; padding: 0 1.1rem; border-bottom: 1px solid var(--color-hairline); flex-shrink: 0;
+}
+.site-menu__head .brand img { height: 28px; }
+.site-menu__head .brand__name { font-size: 1.04rem; }
+
+.site-menu__scroll { flex: 1 1 auto; overflow-y: auto; padding: 1rem 1.1rem 2rem; }
+.site-menu ul { display: flex; flex-direction: column; gap: 0.1rem; }
+.site-menu a { display: block; padding: 0.75rem 0.3rem; font-weight: 600; font-size: 0.97rem; border-radius: var(--radius-sm); transition: color var(--t-fast), background var(--t-fast); }
+.site-menu a:hover { color: var(--color-red); background: var(--color-paper); }
+.site-menu__primary a { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; }
+.site-menu__secondary { border-top: 1px solid var(--color-hairline); padding-top: 0.6rem; margin-top: 0.6rem; }
+
+/* No menu at all on desktop — categories are already in the visible top nav */
 @media (min-width: 901px) {
-  .site-menu__primary { display: none; }
+  .menu-backdrop, .site-menu { display: none !important; }
 }
 
 /* ---------- shared thumbnail treatment (visual cohesion across mixed-quality images) ---------- */
@@ -384,10 +406,6 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); }
   .about-band__row { flex-direction: column; align-items: flex-start; }
   .about-band__stats { width: 100%; justify-content: space-between; gap: 0.8rem; }
   .stat { padding-left: 0.8rem; }
-
-  .site-menu .wrap { flex-direction: column; flex-wrap: nowrap; gap: 0.3rem; padding: 1rem 1.5rem 1.4rem; }
-  .site-menu ul { min-width: 0; }
-  .site-menu__secondary { border-top: 1px solid var(--color-hairline); padding-top: 0.6rem; margin-top: 0.4rem; }
 }
 @media (max-width: 700px) { .tr-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .tr-grid { grid-template-columns: 1fr; } }
