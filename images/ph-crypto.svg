@@ -1,0 +1,23 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Crypto topic placeholder graphic">
+  <rect width="400" height="300" fill="#1b1e22"/>
+  <g stroke="#34383d" stroke-width="1.5" fill="none">
+    <path d="M0 40 H110 L130 60 H270 L290 40 H400"/>
+    <path d="M0 260 H90 L110 240 H300 L320 260 H400"/>
+    <path d="M40 0 V40"/>
+    <path d="M360 0 V40 L340 60"/>
+    <path d="M60 300 V260"/>
+    <path d="M340 300 V260"/>
+  </g>
+  <g fill="#54585e">
+    <circle cx="130" cy="60" r="3"/>
+    <circle cx="270" cy="60" r="3"/>
+    <circle cx="110" cy="240" r="3"/>
+    <circle cx="300" cy="240" r="3"/>
+  </g>
+  <g transform="translate(200,150) scale(4.2)" stroke="#e0282a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" transform-origin="0 0">
+    <g transform="translate(-12,-12)">
+      <circle cx="12" cy="12" r="9"/><path d="M12 6.5v11M9 9h4a1.8 1.8 0 010 3.6h-3a1.8 1.8 0 000 3.6h4.5"/>
+    </g>
+  </g>
+  <rect x="0" y="296" width="400" height="4" fill="#e0282a"/>
+</svg>
