@@ -523,6 +523,14 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); }
 .contact-card__email { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--color-ink); }
 .contact-card__email:hover { color: var(--color-red); }
 
+.tool-box {
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  padding: 2.6rem 1.5rem; margin: 1.5rem 0 2rem; background: var(--color-paper); border-radius: var(--radius); text-align: center;
+}
+.tool-box__value { font-family: var(--font-display); font-weight: 700; font-size: 2.6rem; letter-spacing: -0.01em; color: var(--color-ink); word-break: break-word; }
+.tool-box__label { font-size: 0.95rem; color: var(--color-slate); }
+.tool-box__sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--color-red); margin-top: 0.3rem; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) { .tr-grid { grid-template-columns: repeat(3, 1fr); } .topics-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 900px) {

@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Contact Us | IT Charging</title>
-<meta name="description" content="Get in touch with the IT Charging team for questions, suggestions, or career inquiries." />
-<link rel="canonical" href="../contact-us/" />
+<title>What Time Is It | IT Charging</title>
+<meta name="description" content="Check the current time instantly." />
+<link rel="canonical" href="https://www.itcharging.com/what-time-is-it/" />
 <meta name="robots" content="index, follow" />
 
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="IT Charging" />
-<meta property="og:url" content="../contact-us/" />
-<meta property="og:title" content="Contact Us | IT Charging" />
-<meta property="og:description" content="Get in touch with the IT Charging team for questions, suggestions, or career inquiries." />
+<meta property="og:url" content="https://www.itcharging.com/what-time-is-it/" />
+<meta property="og:title" content="What Time Is It | IT Charging" />
+<meta property="og:description" content="Check the current time instantly." />
 <meta property="og:image" content="https://www.itcharging.com/wp-content/uploads/2025/05/logo-itc.png" />
 <meta name="twitter:card" content="summary_large_image" />
 
@@ -127,35 +127,27 @@
         <li><a href="#">Finance</a></li>
       </ul>
       <ul class="site-menu__secondary">
-        <li><a href="../our-team/">Our Team</a></li>
-        <li><a href="../contact-us/">Contact Us</a></li>
+        <li><a href="our-team/">Our Team</a></li>
+        <li><a href="contact-us/">Contact Us</a></li>
         <li><a href="#newsletter">Newsletter</a></li>
-        <li><a href="../privacy-policy/">Privacy Policy</a></li>
-        <li><a href="../terms-and-conditions/">Terms and Conditions</a></li>
+        <li><a href="privacy-policy/">Privacy Policy</a></li>
+        <li><a href="terms-and-conditions/">Terms and Conditions</a></li>
       </ul>
     </nav>
   </div>
 </header>
 <main id="main">
-  <nav class="wrap breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">Contact Us</li></ol></nav>
+  <nav class="wrap breadcrumb" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li aria-current="page">What Time Is It</li></ol></nav>
   <article class="wrap static-page">
-    <h1>Contact Us</h1>
+    <span class="eyebrow">Tools</span>
+    <h1>What Time Is It</h1>
     <div class="article-page__body">
-      <p>Thank you for your interest in IT Charging. If you have any questions, suggestions, or inquiries regarding potential career opportunities, please feel free to reach out to us.</p>
-
-      <div class="contact-card">
-        <span class="contact-card__icon">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z" fill="none"/><path d="M3 7l9 6 9-6"/></svg>
-        </span>
-        <div>
-          <span class="contact-card__text">Email us at</span>
-          <a class="contact-card__email" href="mailto:admin@itcharging.com">admin@itcharging.com</a>
-        </div>
+      <div class="tool-box">
+        <span class="tool-box__value" id="liveClock">--:--:--</span>
+        <span class="tool-box__label" id="liveDate">Loading…</span>
+        <span class="tool-box__sub" id="liveTimezone"></span>
       </div>
-
-      <p>We value your feedback and are committed to providing prompt and helpful assistance. Our team will do our best to respond to your message as soon as possible.</p>
-      <p>Thank you for considering IT Charging. We look forward to hearing from you!</p>
-      <p>Sincerely,<br/>The IT Charging Team</p>
+      <p>This shows the current time and date on your own device, based on your device's clock and timezone settings.</p>
     </div>
   </article>
 </main>
@@ -194,18 +186,18 @@
     <div>
       <h4>Company</h4>
       <ul>
-        <li><a href="../our-team/">Our Team</a></li>
+        <li><a href="our-team/">Our Team</a></li>
         <li><a href="https://www.itcharging.com/careers/">Careers</a></li>
-        <li><a href="../contact-us/">Contact Us</a></li>
-        <li><a href="../history/">History</a></li>
+        <li><a href="contact-us/">Contact Us</a></li>
+        <li><a href="history/">History</a></li>
       </ul>
     </div>
 
     <div>
       <h4>Legal</h4>
       <ul>
-        <li><a href="../privacy-policy/">Privacy Policy</a></li>
-        <li><a href="../terms-and-conditions/">Terms and Conditions</a></li>
+        <li><a href="privacy-policy/">Privacy Policy</a></li>
+        <li><a href="terms-and-conditions/">Terms and Conditions</a></li>
       </ul>
     </div>
 
@@ -221,5 +213,15 @@
   document.getElementById("footerYear").textContent = "© " + new Date().getFullYear() + " IT Charging. All rights reserved.";
 </script>
 
+<script>
+  function updateClock() {
+    var now = new Date();
+    document.getElementById("liveClock").textContent = now.toLocaleTimeString();
+    document.getElementById("liveDate").textContent = now.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    document.getElementById("liveTimezone").textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
 </body>
 </html>
