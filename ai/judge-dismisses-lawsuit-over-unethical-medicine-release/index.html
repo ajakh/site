@@ -68,11 +68,11 @@
     <nav class="primary-nav" aria-label="Primary">
       <ul>
         <li><a href="category/ai/">AI</a></li>
-        <li><a href="#">Security</a></li>
-        <li><a href="#">Crypto</a></li>
-        <li><a href="#">Web Dev</a></li>
-        <li><a href="#">Reviews</a></li>
-        <li><a href="#">Finance</a></li>
+        <li><a href="../../category/security/">Security</a></li>
+        <li><a href="../../category/make-money/">Make Money</a></li>
+        <li><a href="../../category/web-development/">Web Dev</a></li>
+        <li><a href="../../category/review/">Reviews</a></li>
+        <li><a href="../../category/finance/">Finance</a></li>
       </ul>
     </nav>
 
@@ -120,11 +120,11 @@
       <ul class="site-menu__primary">
         <li><a href="../../index.html">Home</a></li>
         <li><a href="category/ai/">AI</a></li>
-        <li><a href="#">Security</a></li>
-        <li><a href="#">Crypto</a></li>
-        <li><a href="#">Web Dev</a></li>
-        <li><a href="#">Reviews</a></li>
-        <li><a href="#">Finance</a></li>
+        <li><a href="../../category/security/">Security</a></li>
+        <li><a href="../../category/make-money/">Make Money</a></li>
+        <li><a href="../../category/web-development/">Web Dev</a></li>
+        <li><a href="../../category/review/">Reviews</a></li>
+        <li><a href="../../category/finance/">Finance</a></li>
       </ul>
       <ul class="site-menu__secondary">
         <li><a href="our-team/">Our Team</a></li>
@@ -142,9 +142,66 @@
     <span class="eyebrow">AI</span>
     <h1>Who's Responsible When AI Makes a Mistake in Healthcare? The Legal Gray Zone of Medical AI</h1>
     <div class="article-page__body">
-      <p>As AI tools take on a bigger role in diagnostics and treatment recommendations, a hard question is still mostly unanswered: when an AI system gets it wrong, who's actually liable?</p>
-      <p><em>This article is being migrated from our previous site and will be fully available here shortly. In the meantime, you can read the original version on our live site.</em></p>
-      
+
+      <h2>AI in Healthcare: A Growing Frontier with Legal Minefields</h2>
+      <p>Artificial intelligence has deeply embedded itself in modern healthcare — revolutionizing diagnosis, treatment, and patient monitoring. Over 83% of hospitals in the U.S. now use some form of AI. AI tools have shown up to 94% accuracy in diagnosing breast cancer, outperforming some radiologists. However, a 2023 study in <em>The Lancet</em> revealed AI misdiagnosed 6.8% of cases in a test group — a serious legal concern.</p>
+
+      <h2>Who Takes the Fall? The Chain of Legal Responsibility</h2>
+
+      <h3>1. Doctors and Medical Staff</h3>
+      <p>Doctors are legally expected to use their professional judgment. If they overly rely on AI without verifying its suggestions, courts may hold them directly liable for malpractice. In a 2022 U.S. case, a radiologist was found 40% liable in a delayed cancer diagnosis because they didn't question the AI's scan interpretation.</p>
+
+      <h3>2. Hospitals and Clinics</h3>
+      <p>Hospitals can be sued under institutional liability, especially if they force AI use without proper training, skip due diligence when adopting AI tools, or don't update systems regularly. A private hospital in the UK was sued in 2023 for using outdated diagnostic software that failed to detect a pulmonary embolism.</p>
+
+      <h3>3. AI Software Developers and Vendors</h3>
+      <p>This is a legally evolving zone. While developers often use legal disclaimers, courts are starting to treat medical AI like a regulated product — meaning lawsuits for design flaws, lack of explainability, or misleading marketing are emerging. The EU's AI Act and AI Liability Directive will force companies to explain how AI decisions are made and accept responsibility in harm cases starting 2026.</p>
+
+      <h2>Real-World AI Error Cases in Medicine</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Year</th><th>Incident</th><th>AI Tool</th><th>Legal Fallout</th></tr></thead>
+          <tbody>
+            <tr><td>2021</td><td>IBM Watson recommended unsafe cancer treatments</td><td>Watson for Oncology</td><td>Abandoned by multiple hospitals</td></tr>
+            <tr><td>2022</td><td>AI-assisted CT scan missed blood clot</td><td>Local diagnostic tool</td><td>Doctor sued; hospital settled privately</td></tr>
+            <tr><td>2023</td><td>AI robot caused organ tear in surgery</td><td>Intuitive Surgical System</td><td>Lawsuit filed; manufacturer shared liability</td></tr>
+            <tr><td>2024</td><td>Mental health chatbot gave suicidal user risky advice</td><td>Unverified chatbot app</td><td>Company under investigation</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Key Legal Challenges Still Unsolved</h2>
+      <ul>
+        <li><strong>Explainability Gap:</strong> Most AI systems use complex deep learning models — making it nearly impossible to understand their decisions.</li>
+        <li><strong>Data Bias and Discrimination:</strong> If AI is trained on flawed or non-diverse datasets, it may deliver biased diagnoses.</li>
+        <li><strong>Dynamic Learning Risks:</strong> Some AI systems continue learning after deployment, meaning the version in use might not be the one that was approved.</li>
+      </ul>
+
+      <h2>Country-by-Country Legal Landscape</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Country</th><th>Status</th><th>Highlights</th></tr></thead>
+          <tbody>
+            <tr><td>🇺🇸 USA</td><td>Emerging</td><td>FDA treats some AI as "Software as a Medical Device" — liability mostly falls on doctors unless proven otherwise.</td></tr>
+            <tr><td>🇪🇺 EU</td><td>Strong draft laws</td><td>AI Act and Liability Directive target transparency, safety, and developer accountability.</td></tr>
+            <tr><td>🇬🇧 UK</td><td>Moderate</td><td>Focus on co-decision-making between doctor and AI. Courts test joint liability.</td></tr>
+            <tr><td>🇮🇳 India</td><td>Early stage</td><td>Proposals exist but no binding healthcare AI laws yet.</td></tr>
+            <tr><td>🇨🇳 China</td><td>Rapid deployment</td><td>AI use is booming in rural hospitals, but with minimal legal protection for patients.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>What Can Be Done?</h2>
+      <ul>
+        <li>Perform risk assessments before deploying AI tools.</li>
+        <li>Document all decision-making that involves AI — especially when overriding its output.</li>
+        <li>Use only regulated, tested AI tools that meet FDA, CE, or ISO standards.</li>
+        <li>Ensure patients are informed when AI plays a role in their diagnosis or treatment.</li>
+      </ul>
+
+      <h2>Conclusion: The Legal System Must Catch Up</h2>
+      <p>AI in healthcare is both a miracle and a minefield. As hospitals and doctors increasingly rely on algorithms, the law must evolve to protect both patients and practitioners. Until clear frameworks exist, the question remains: <strong>when AI makes a medical mistake — who pays the price?</strong></p>
+
     </div>
   </article>
 </main>
