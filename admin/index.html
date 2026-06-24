@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IT Charging Admin</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; }
+  
+  /* LOGIN */
+  #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .login-box { background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+  .login-box h1 { font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .login-box p { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .login-box input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; }
+  .btn { width: 100%; padding: 0.8rem; background: #e02020; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+  .btn:hover { background: #c01818; }
+  .btn-secondary { background: #666; }
+  .btn-secondary:hover { background: #444; }
+  .btn-small { width: auto; padding: 0.4rem 1rem; font-size: 0.85rem; }
+  .error { color: #e02020; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+
+  /* MAIN */
+  #adminScreen { display: none; }
+  .topbar { background: #1a1a1a; color: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .topbar h1 { font-size: 1.2rem; }
+  .topbar span { font-size: 0.85rem; color: #aaa; }
+  .logout { background: none; border: 1px solid #666; color: #aaa; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+  .logout:hover { border-color: #aaa; color: white; }
+
+  .admin-body { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 56px); }
+
+  /* SIDEBAR */
+  .sidebar { background: white; border-right: 1px solid #eee; padding: 1.5rem; overflow-y: auto; }
+  .sidebar h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 1rem; }
+  .new-btn { display: block; width: 100%; padding: 0.7rem; background: #e02020; color: white; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; margin-bottom: 1.2rem; text-align: center; }
+  .new-btn:hover { background: #c01818; }
+  .article-list { list-style: none; }
+  .article-list li { padding: 0.7rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; border: 1px solid transparent; margin-bottom: 0.3rem; }
+  .article-list li:hover { background: #f5f5f5; }
+  .article-list li.active { background: #fff5f5; border-color: #e02020; color: #e02020; font-weight: 600; }
+  .article-list li .cat { font-size: 0.75rem; color: #999; display: block; font-weight: 400; }
+
+  /* EDITOR */
+  .editor { padding: 2rem; overflow-y: auto; }
+  .editor h2 { font-size: 1.1rem; margin-bottom: 1.5rem; color: #333; }
+  .field { margin-bottom: 1.2rem; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 600; color: #555; margin-bottom: 0.4rem; }
+  .field input, .field select, .field textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.92rem; font-family: inherit; }
+  .field textarea { resize: vertical; min-height: 300px; font-family: monospace; font-size: 0.85rem; }
+  .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: #e02020; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .actions button { padding: 0.7rem 1.5rem; border-radius: 8px; border: none; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+  .save-btn { background: #e02020; color: white; }
+  .save-btn:hover { background: #c01818; }
+  .delete-btn { background: #fee; color: #e02020; border: 1px solid #fcc; }
+  .delete-btn:hover { background: #fcc; }
+  .cancel-btn { background: #f0f0f0; color: #555; }
+  .cancel-btn:hover { background: #e0e0e0; }
+  .status { font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 6px; display: none; }
+  .status.success { background: #e8f5e9; color: #2e7d32; display: block; }
+  .status.error { background: #ffebee; color: #c62828; display: block; }
+  .empty { color: #999; font-size: 0.9rem; padding: 2rem; text-align: center; }
+
+  @media (max-width: 700px) {
+    .admin-body { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 1px solid #eee; max-height: 220px; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>🔐 IT Charging Admin</h1>
+    <p>Enter your GitHub Personal Access Token to continue.</p>
+    <input type="password" id="tokenInput" placeholder="GitHub token (ghp_...)" />
+    <input type="text" id="repoInput" placeholder="Repo (e.g. ajakh/site)" value="ajakh/site" />
+    <button class="btn" onclick="login()">Login</button>
+    <p class="error" id="loginError">Invalid token or repo. Please try again.</p>
+    <p style="margin-top:1rem;font-size:0.78rem;color:#999;">Your token is never stored. It lives only in memory while this tab is open.</p>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminScreen">
+  <div class="topbar">
+    <h1>IT Charging Admin</h1>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <span id="repoLabel"></span>
+      <button class="logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="sidebar">
+      <button class="new-btn" onclick="newArticle()">+ New Article</button>
+      <h2>Articles</h2>
+      <ul class="article-list" id="articleList"></ul>
+    </div>
+    <div class="editor" id="editor">
+      <div class="empty">Select an article to edit or click + New Article</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let token = '';
+let repo = '';
+let articles = [];
+let fileSha = '';
+let currentIndex = -1;
+
+async function login() {
+  token = document.getElementById('tokenInput').value.trim();
+  repo = document.getElementById('repoInput').value.trim();
+  if (!token || !repo) return;
+  try {
+    const data = await fetchArticles();
+    if (data === null) throw new Error('failed');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminScreen').style.display = 'block';
+    document.getElementById('repoLabel').textContent = repo;
+    renderList();
+  } catch(e) {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+async function fetchArticles() {
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/data/articles.json`, {
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+  });
+  if (!res.ok) return null;
+  const json = await res.json();
+  fileSha = json.sha;
+  articles = JSON.parse(atob(json.content.replace(/\n/g,'')));
+  return articles;
+}
+
+function logout() {
+  token = ''; repo = ''; articles = []; fileSha = ''; currentIndex = -1;
+  document.getElementById('adminScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('tokenInput').value = '';
+}
+
+function renderList() {
+  const ul = document.getElementById('articleList');
+  ul.innerHTML = articles.map((a, i) => `
+    <li class="${i === currentIndex ? 'active' : ''}" onclick="editArticle(${i})">
+      ${a.title}
+      <span class="cat">${a.categoryLabel} · ${a.slug}</span>
+    </li>
+  `).join('') || '<li style="color:#999;font-size:0.85rem;">No articles yet</li>';
+}
+
+function newArticle() {
+  currentIndex = -1;
+  renderEditor({
+    slug: '', title: '', category: '', categoryLabel: '',
+    excerpt: '', featuredImage: '', featuredImageAlt: '',
+    date: new Date().toISOString().split('T')[0], body: ''
+  }, true);
+  renderList();
+}
+
+function editArticle(i) {
+  currentIndex = i;
+  renderEditor(articles[i], false);
+  renderList();
+}
+
+function renderEditor(a, isNew) {
+  document.getElementById('editor').innerHTML = `
+    <h2>${isNew ? '✏️ New Article' : '✏️ Edit Article'}</h2>
+    <div class="field"><label>Title</label><input id="f_title" value="${esc(a.title)}" placeholder="Article title" /></div>
+    <div class="field"><label>Slug (URL path — no leading slash)</label><input id="f_slug" value="${esc(a.slug)}" placeholder="e.g. security/what-is-brute-force-attacks" /></div>
+    <div class="field-row">
+      <div class="field"><label>Category (lowercase)</label><input id="f_category" value="${esc(a.category)}" placeholder="e.g. security" /></div>
+      <div class="field"><label>Category Label</label><input id="f_categoryLabel" value="${esc(a.categoryLabel)}" placeholder="e.g. Security" /></div>
+    </div>
+    <div class="field"><label>Excerpt (used in meta description)</label><input id="f_excerpt" value="${esc(a.excerpt)}" placeholder="Short description of the article" /></div>
+    <div class="field-row">
+      <div class="field"><label>Featured Image (path in /images/)</label><input id="f_featuredImage" value="${esc(a.featuredImage)}" placeholder="images/filename.jpg" /></div>
+      <div class="field"><label>Image Alt Text</label><input id="f_featuredImageAlt" value="${esc(a.featuredImageAlt)}" placeholder="Describe the image" /></div>
+    </div>
+    <div class="field"><label>Date</label><input id="f_date" type="date" value="${esc(a.date)}" /></div>
+    <div class="field"><label>Body (HTML)</label><textarea id="f_body">${escHtml(a.body)}</textarea></div>
+    <div class="status" id="saveStatus"></div>
+    <div class="actions">
+      <button class="save-btn" onclick="saveArticle()">💾 Save & Publish</button>
+      ${!isNew ? `<button class="delete-btn" onclick="deleteArticle()">🗑 Delete</button>` : ''}
+      <button class="cancel-btn" onclick="cancelEdit()">Cancel</button>
+    </div>
+  `;
+}
+
+function getFormData() {
+  return {
+    slug: document.getElementById('f_slug').value.trim(),
+    title: document.getElementById('f_title').value.trim(),
+    category: document.getElementById('f_category').value.trim(),
+    categoryLabel: document.getElementById('f_categoryLabel').value.trim(),
+    excerpt: document.getElementById('f_excerpt').value.trim(),
+    featuredImage: document.getElementById('f_featuredImage').value.trim(),
+    featuredImageAlt: document.getElementById('f_featuredImageAlt').value.trim(),
+    date: document.getElementById('f_date').value.trim(),
+    body: document.getElementById('f_body').value.trim()
+  };
+}
+
+async function saveArticle() {
+  const data = getFormData();
+  if (!data.title || !data.slug) {
+    showStatus('Title and Slug are required.', 'error');
+    return;
+  }
+  if (currentIndex === -1) {
+    articles.push(data);
+    currentIndex = articles.length - 1;
+  } else {
+    articles[currentIndex] = data;
+  }
+  await pushArticles('Update article: ' + data.title);
+  renderList();
+  showStatus('✅ Saved! GitHub Action is building your page…', 'success');
+}
+
+async function deleteArticle() {
+  if (!confirm('Delete this article? This cannot be undone.')) return;
+  articles.splice(currentIndex, 1);
+  currentIndex = -1;
+  await pushArticles('Delete article');
+  renderList();
+  document.getElementById('editor').innerHTML = '<div class="empty">Article deleted.</div>';
+}
+
+function cancelEdit() {
+  currentIndex = -1;
+  renderList();
+  document.getElementById('editor').innerHTML = '<div class="empty">Select an article to edit or click + New Article</div>';
+}
+
+async function pushArticles(message) {
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(articles, null, 2))));
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/data/articles.json`, {
+    method: 'PUT',
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, content, sha: fileSha })
+  });
+  const json = await res.json();
+  fileSha = json.content.sha;
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('saveStatus');
+  el.textContent = msg;
+  el.className = 'status ' + type;
+}
+
+function esc(s) { return (s||'').replace(/"/g, '&quot;'); }
+function escHtml(s) { return (s||'').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+document.getElementById('tokenInput').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
+</script>
+</body>
+</html>
