@@ -247,6 +247,7 @@ async function fetchArticles(){
   articles=JSON.parse(atob(json.content.replace(/\n/g,'')));
 }
 async function pushArticles(msg){
+<<<<<<< HEAD
   // Always get fresh sha before pushing
   const getRes=await fetch(`https://api.github.com/repos/${repo}/contents/data/articles.json`,
     {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
@@ -256,13 +257,22 @@ async function pushArticles(msg){
 
   const content=btoa(unescape(encodeURIComponent(JSON.stringify(articles,null,2))));
   const putRes=await fetch(`https://api.github.com/repos/${repo}/contents/data/articles.json`,{
+=======
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(articles,null,2))));
+  const res=await fetch(`https://api.github.com/repos/${repo}/contents/data/articles.json`,{
+>>>>>>> 343c9a6f4d7d3267e3a3b596888fe2ec718ec91c
     method:'PUT',
     headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
     body:JSON.stringify({message:msg,content,sha:fileSha})
   });
+<<<<<<< HEAD
   const putJson=await putRes.json();
   if(!putRes.ok) throw new Error(putJson.message||putRes.status);
   if(putJson.content&&putJson.content.sha) fileSha=putJson.content.sha;
+=======
+  const json=await res.json();
+  fileSha=json.content.sha;
+>>>>>>> 343c9a6f4d7d3267e3a3b596888fe2ec718ec91c
 }
 
 // ── SIDEBAR ──
