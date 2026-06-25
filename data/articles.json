@@ -20,5 +20,16 @@
     "featuredImageAlt": "",
     "date": "2026-06-25",
     "body": "<p>ddd</p>"
+  },
+  {
+    "slug": "ddd",
+    "title": "ddd",
+    "category": "ai",
+    "categoryLabel": "AI",
+    "excerpt": "ddddd",
+    "featuredImage": "",
+    "featuredImageAlt": "",
+    "date": "2026-06-25",
+    "body": ""
   }
 ]
