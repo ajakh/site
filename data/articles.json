@@ -11,17 +11,6 @@
     "body": "<p>ddd</p>"
   },
   {
-    "slug": "ddd",
-    "title": "ddd",
-    "category": "ai",
-    "categoryLabel": "AI",
-    "excerpt": "ddddd",
-    "featuredImage": "",
-    "featuredImageAlt": "",
-    "date": "2026-06-25",
-    "body": ""
-  },
-  {
     "slug": "how-to-secure-a-wordpress-website",
     "title": "How to secure a WordPress Website?",
     "category": "wordpress",
