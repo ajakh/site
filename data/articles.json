@@ -1,35 +1,13 @@
 [
   {
-    "slug": "food/always-add-some-freshly-sliced-fruits-in-your-daily-diet",
-    "title": "The Importance of Freshly Sliced Fruits in Your Daily Diet",
-    "category": "food",
-    "categoryLabel": "Food",
-    "excerpt": "Discover why adding freshly sliced fruits to your daily diet boosts energy, immunity, gut health, and more.",
-    "featuredImage": "images/freshly-sliced-fruits.jpg",
-    "featuredImageAlt": "Freshly sliced fruits in a bowl",
-    "date": "2024-05-01",
-    "body": "<p>Forget fad diets and expensive supplements — sometimes the best health boosters are the ones you <em>slice and eat</em>. Fresh fruits are mini medicine cabinets bursting with powerful nutrients your body craves.</p><h2>1. Fruits Are Nature's Multivitamins</h2><p>Fresh fruits deliver Vitamin C for stronger immunity, Vitamin A for glowing skin, Potassium and Magnesium for your heart, and Fiber to keep your gut happy. One orange alone packs more than 100% of your daily Vitamin C needs.</p><h2>2. Get an Energy Boost Without the Crash</h2><p>Fruits like bananas, grapes, and apples offer clean-burning energy through natural sugars and fiber. No crash, just steady fuel. Pre-workout? Grab a banana. Afternoon slump? Try apple slices with nut butter.</p><h2>3. Fight Aging with Antioxidants</h2><p>Blueberries improve memory and reduce brain fog. Pomegranate boosts heart health. Strawberries are great for skin repair and cell regeneration.</p><h2>4. Gut Health Starts with Fruit</h2><p>Apples and pears fuel good bacteria. Berries balance your microbiome. Bananas calm digestion. Over 70% of your immune system lives in your gut — fruit is your daily defense system.</p><h2>5. Weight Management Without Willpower</h2><p>Fresh fruits fill you up, replace junk food with sweet satisfaction, and curb cravings naturally. Swap your 300-calorie chocolate bar for a 90-calorie apple with cinnamon.</p>"
-  },
-  {
-    "slug": "security/what-is-brute-force-attacks",
-    "title": "What Is a Brute Force Attack?",
-    "category": "security",
-    "categoryLabel": "Security",
-    "excerpt": "A brute force attack is when a hacker tries thousands of password combinations to break into accounts. Here's how it works and how to stop it.",
-    "featuredImage": "images/brute-force-attack.jpg",
-    "featuredImageAlt": "Brute force attack illustration",
-    "date": "2024-05-01",
-    "body": "<p>A brute force attack is when a hacker tries lots of different passwords and usernames until they find the right ones. They use computers to quickly try out loads of combinations until they get it right.</p><h2>Types of Brute Force Attacks</h2><h3>Basic Brute Force</h3><p>The hacker tries to guess login details without special software — common passwords like password123 or simple PIN codes.</p><h3>Dictionary Attack</h3><p>The attacker goes through lists of words, sometimes adding numbers or symbols, to guess the password.</p><h3>Hybrid Attack</h3><p>Combines dictionary attacks with brute force — finding passwords like SanDiego123 by combining common words with numbers.</p><h3>Credential Stuffing</h3><p>Hackers use stolen username and password pairs and try them on different websites to break into accounts.</p><h2>How to Prevent Brute Force Attacks</h2><ul><li>Use passwords longer than 10 characters with mixed characters</li><li>Never reuse passwords across sites</li><li>Enable multi-factor authentication (MFA)</li><li>Use a password manager</li><li>Enable login attempt limits on your site</li></ul>"
-  },
-  {
-    "slug": "ai/ai-blogging-tools-2025-best-tools-that-helped-me-get-google-adsense-approval-fast",
-    "title": "AI Blogging Tools 2025 — Best Tools That Helped Me Get Google AdSense Approval Fast",
+    "slug": "x",
+    "title": "ccccc",
     "category": "ai",
     "categoryLabel": "AI",
-    "excerpt": "The exact AI blogging tools used to get Google AdSense approval fast in 2025 — from writing and SEO to images and workflow.",
-    "featuredImage": "images/ai-blogging-tools-2025.jpg",
-    "featuredImageAlt": "AI Blogging Tools 2025",
-    "date": "2025-05-01",
-    "body": "<p>AI Blogging Tools 2025 are changing the game for content creators. Whether you're starting a new blog or optimizing an existing one for Google AdSense approval, the right AI tools can save you time, improve content quality, and fast-track your growth.</p><h2>Best AI Tools for Writing</h2><h3>1. ChatGPT</h3><p>Best for long-form blog writing, outlines, intros, and FAQs. Generate first drafts and polish them manually. Use prompts like: Write a blog post introduction on [topic] optimized for AdSense approval.</p><h3>2. Jasper AI</h3><p>Best for blog post generation and marketing copy. Built-in templates for blog intros, conclusions, and product reviews.</p><h3>3. Notion AI</h3><p>Great for quick research summaries and idea generation — built into your note-taking tool.</p><h2>AI Tools for Keyword Research</h2><h3>4. Surfer SEO</h3><p>Helps you write keyword-optimized content. Focus on high CPC keywords for blogging, tech, and finance.</p><h3>5. LowFruits.io</h3><p>Perfect for finding low-competition, high-intent keywords. Shows where small blogs rank — perfect for beginners.</p><h2>AI Tools for SEO</h2><h3>6. Rank Math + Content AI</h3><p>Gives real-time SEO scores and content suggestions. Schema-ready which helps with AdSense approval.</p><h2>AI for Blog Images</h2><h3>7. Canva Pro</h3><p>Create Pinterest pins, blog banners, and YouTube thumbnails with text overlays using keywords for SEO image ranking.</p><h3>8. DALL·E 3</h3><p>Generate unique, high-quality blog images tailored to each article topic. Original enough to pass Google's image originality checks.</p><h2>My AI Blogging Workflow</h2><ol><li>Use Google Trends to find a trending topic</li><li>Use LowFruits + Surfer SEO to validate keywords</li><li>Use ChatGPT to write outline and draft</li><li>Use Canva or DALL·E to make blog images</li><li>Use Rank Math to polish SEO</li><li>Use Pictory to repurpose post into YouTube Shorts</li></ol>"
+    "excerpt": "x",
+    "featuredImage": "",
+    "featuredImageAlt": "",
+    "date": "2026-06-30",
+    "body": ""
   }
 ]
