@@ -12,8 +12,20 @@
     "categoryLabel": "Food"
   },
   {
-    "title": "fick",
-    "slug": "fick",
+    "title": "shit bro",
+    "slug": "shit-bro",
+    "excerpt": "",
+    "body": "<p>sfsfs</p>",
+    "status": "published",
+    "publishDate": "",
+    "featuredImage": "",
+    "featuredImageAlt": "",
+    "category": "",
+    "categoryLabel": ""
+  },
+  {
+    "title": "this shit",
+    "slug": "this-shit",
     "excerpt": "",
     "body": "",
     "status": "published",
