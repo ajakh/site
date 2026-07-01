@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin — IT Charging</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js" referrerpolicy="origin"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#0f0f0f;color:#e0e0e0;height:100vh;overflow:hidden}
+
+/* LOGIN */
+#loginScreen{display:flex;align-items:center;justify-content:center;height:100vh;background:#0f0f0f}
+.login-card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;padding:2.5rem;width:100%;max-width:420px}
+.login-logo{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1.5rem}
+.login-logo span{color:#e02020}
+.fld{margin-bottom:1rem}
+.fld label{display:block;font-size:.75rem;font-weight:600;color:#666;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.05em}
+.fld input,.fld select,.fld textarea{width:100%;padding:.65rem .9rem;background:#0f0f0f;border:1px solid #2a2a2a;border-radius:7px;color:#ddd;font-size:.88rem;font-family:inherit}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:#e02020}
+.fld textarea{resize:vertical;min-height:100px}
+.fld select option{background:#1a1a1a}
+.btn{padding:.7rem 1.4rem;border:none;border-radius:7px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:#e02020;color:#fff;width:100%;margin-top:.5rem}
+.btn-primary:hover{background:#c01818}
+.btn-ghost{background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa}
+.btn-ghost:hover{border-color:#555;color:#fff}
+.btn-danger{background:#1f0a0a;border:1px solid #3a1a1a;color:#ff6b6b}
+.btn-danger:hover{background:#2a0f0f;border-color:#e02020}
+.err{color:#ff6b6b;font-size:.8rem;margin-top:.5rem;display:none}
+.note{font-size:.73rem;color:#555;margin-top:.8rem;text-align:center}
+
+/* SHELL */
+#shell{display:none;height:100vh;flex-direction:column}
+
+/* TOPBAR */
+.topbar{background:#141414;border-bottom:1px solid #1e1e1e;height:50px;display:flex;align-items:center;padding:0 1.2rem;gap:1rem;flex-shrink:0}
+.topbar-logo{font-size:.95rem;font-weight:700;color:#fff;margin-right:.5rem}
+.topbar-logo span{color:#e02020}
+.tab-nav{display:flex;gap:.3rem;flex:1}
+.tab-nav button{padding:.3rem .9rem;border-radius:6px;font-size:.78rem;font-weight:500;cursor:pointer;border:none;background:transparent;color:#666;transition:all .2s}
+.tab-nav button.active,.tab-nav button:hover{background:#1e1e1e;color:#fff}
+.topbar-right{display:flex;align-items:center;gap:.5rem;margin-left:auto}
+.logout{background:none;border:1px solid #2a2a2a;color:#666;padding:.28rem .7rem;border-radius:5px;cursor:pointer;font-size:.75rem}
+.logout:hover{color:#fff;border-color:#555}
+
+/* BODY */
+.shell-body{flex:1;overflow:hidden;display:flex}
+
+/* PANELS */
+.panel{display:none;width:100%;height:100%;overflow-y:auto;padding:1.5rem}
+.panel.active{display:flex;gap:1.5rem}
+.panel-full{display:none;width:100%;height:100%;overflow-y:auto;padding:1.5rem;flex-direction:column}
+.panel-full.active{display:flex}
+
+/* SIDEBAR LIST */
+.list-sidebar{width:260px;flex-shrink:0}
+.list-sidebar-head{margin-bottom:1rem;display:flex;gap:.5rem}
+.item-list{list-style:none}
+.item-list li{padding:.6rem .8rem;border-radius:7px;cursor:pointer;border:1px solid transparent;margin-bottom:.2rem;font-size:.83rem}
+.item-list li:hover{background:#1a1a1a}
+.item-list li.active{background:#1e0000;border-color:#e02020;color:#ff6b6b}
+.item-list .item-sub{font-size:.7rem;color:#555;margin-top:.15rem}
+.list-empty{color:#444;font-size:.8rem;padding:1rem .5rem}
+
+/* EDITOR AREA */
+.edit-area{flex:1;min-width:0}
+.edit-section{background:#141414;border:1px solid #1e1e1e;border-radius:10px;padding:1.2rem;margin-bottom:1rem}
+.edit-section h3{font-size:.72rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid #1e1e1e}
+.fld-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.edit-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.status{font-size:.8rem;padding:.45rem .9rem;border-radius:6px;display:none}
+.status.ok{background:#0a1f0a;border:1px solid #1a4a1a;color:#4caf50;display:block}
+.status.fail{background:#1f0a0a;border:1px solid #4a1a1a;color:#ff6b6b;display:block}
+.status.loading{background:#0a0f1f;border:1px solid #1a2a4a;color:#64b5f6;display:block}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid #fff3;border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:.3rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* IMAGE UPLOAD */
+.img-zone{border:2px dashed #2a2a2a;border-radius:9px;padding:1.2rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;min-height:100px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem}
+.img-zone:hover{border-color:#e02020;background:#1a0000}
+.img-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-zone img{max-width:100%;max-height:160px;border-radius:7px;display:block}
+.img-zone-text{color:#555;font-size:.8rem}
+.img-zone-text strong{color:#e02020;display:block;margin-bottom:.2rem}
+
+/* IMAGE LIBRARY */
+.img-library{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;margin-top:.6rem}
+.img-lib-item{border:2px solid #1e1e1e;border-radius:7px;overflow:hidden;cursor:pointer;transition:border-color .2s;position:relative}
+.img-lib-item:hover{border-color:#e02020}
+.img-lib-item img{width:100%;height:80px;object-fit:cover;display:block}
+.img-lib-item span{display:block;font-size:.65rem;color:#666;padding:.2rem .4rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.img-lib-item .img-del{position:absolute;top:2px;right:2px;background:#e02020;color:#fff;border:none;border-radius:3px;width:18px;height:18px;font-size:.65rem;cursor:pointer;display:none;align-items:center;justify-content:center}
+.img-lib-item:hover .img-del{display:flex}
+
+/* SETTINGS */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.nav-editor-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.5rem}
+.nav-editor-row input{flex:1}
+.nav-editor-row button{flex-shrink:0;padding:.4rem .7rem;font-size:.75rem}
+
+/* SCHEDULE */
+.schedule-badge{font-size:.68rem;background:#1a2a1a;color:#4caf50;border:1px solid #2a4a2a;padding:.1rem .4rem;border-radius:4px;margin-left:.4rem}
+.draft-badge{font-size:.68rem;background:#2a2a0a;color:#ffc107;border:1px solid #4a4a1a;padding:.1rem .4rem;border-radius:4px;margin-left:.4rem}
+
+/* WP CONVERTER */
+.wp-box{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.wp-box textarea{min-height:300px;font-family:monospace;font-size:.78rem;background:#0a0a0a;color:#ccc;border-color:#2a2a2a}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">IT <span>Charging</span> Admin</div>
+    <div class="fld"><label>GitHub Token</label><input type="password" id="tkn" placeholder="ghp_xxxxxxxxxxxx" /></div>
+    <div class="fld"><label>Repository</label><input type="text" id="repoIn" value="ajakh/site" /></div>
+    <button class="btn btn-primary" onclick="doLogin()" id="loginBtn">Sign In</button>
+    <p class="err" id="loginErr">⚠️ Could not connect. Check token and repo.</p>
+    <p class="note">Token stored in memory only — cleared on tab close.</p>
+  </div>
+</div>
+
+<!-- SHELL -->
+<div id="shell">
+  <div class="topbar">
+    <div class="topbar-logo">IT <span>Charging</span></div>
+    <div class="tab-nav">
+      <button class="active" onclick="showPanel('articles')">Articles</button>
+      <button onclick="showPanel('pages')">Pages</button>
+      <button onclick="showPanel('images')">Images</button>
+      <button onclick="showPanel('settings')">Settings</button>
+      <button onclick="showPanel('converter')">WP Converter</button>
+    </div>
+    <div class="topbar-right">
+      <span style="font-size:.72rem;color:#444" id="repoLabel"></span>
+      <button class="logout" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+  <div class="shell-body">
+
+    <!-- ARTICLES -->
+    <div class="panel active" id="panel-articles">
+      <div class="list-sidebar">
+        <div class="list-sidebar-head">
+          <button class="btn btn-primary" style="flex:1;padding:.5rem" onclick="newItem('article')">+ New Article</button>
+        </div>
+        <div style="margin-bottom:.5rem"><input type="text" placeholder="Search…" style="width:100%;padding:.45rem .7rem;background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;color:#ccc;font-size:.8rem;font-family:inherit" oninput="filterItems('article',this.value)" /></div>
+        <ul class="item-list" id="article-list"></ul>
+      </div>
+      <div class="edit-area" id="article-editor">
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#333;font-size:.9rem">Select an article or create a new one</div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="panel" id="panel-pages">
+      <div class="list-sidebar">
+        <div class="list-sidebar-head">
+          <button class="btn btn-primary" style="flex:1;padding:.5rem" onclick="newItem('page')">+ New Page</button>
+        </div>
+        <div style="margin-bottom:.5rem"><input type="text" placeholder="Search…" style="width:100%;padding:.45rem .7rem;background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;color:#ccc;font-size:.8rem;font-family:inherit" oninput="filterItems('page',this.value)" /></div>
+        <ul class="item-list" id="page-list"></ul>
+      </div>
+      <div class="edit-area" id="page-editor">
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#333;font-size:.9rem">Select a page or create a new one</div>
+      </div>
+    </div>
+
+    <!-- IMAGES -->
+    <div class="panel-full" id="panel-images">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <h2 style="font-size:1rem;font-weight:700">Image Library</h2>
+        <label style="cursor:pointer">
+          <span class="btn btn-primary" style="display:inline-block;padding:.4rem 1rem;font-size:.8rem">+ Upload Images</span>
+          <input type="file" accept="image/*" multiple style="display:none" onchange="uploadImages(event)" />
+        </label>
+      </div>
+      <div class="img-library" id="img-library"><div style="color:#444;font-size:.8rem">Loading images…</div></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="panel-full" id="panel-settings">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:1.2rem">Site Settings</h2>
+      <div id="settings-form"></div>
+      <div style="margin-top:1rem;display:flex;gap:.6rem;align-items:center">
+        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+        <div class="status" id="settings-status"></div>
+      </div>
+    </div>
+
+    <!-- WP CONVERTER -->
+    <div class="panel-full" id="panel-converter">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:.5rem">WordPress → Clean HTML Converter</h2>
+      <p style="font-size:.8rem;color:#555;margin-bottom:1rem">Paste WordPress block HTML on the left — get clean HTML on the right ready to paste into the body field.</p>
+      <div class="wp-box">
+        <div class="fld"><label>WordPress HTML (paste here)</label><textarea id="wp-input" placeholder="Paste WordPress block HTML here…" oninput="convertWP()"></textarea></div>
+        <div class="fld"><label>Clean HTML (copy this)</label><textarea id="wp-output" readonly placeholder="Converted HTML will appear here…"></textarea></div>
+      </div>
+      <button class="btn btn-ghost" style="margin-top:.6rem;width:auto;padding:.4rem 1rem" onclick="document.getElementById('wp-output').select();document.execCommand('copy')">Copy Clean HTML</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let token='', repo='', articles=[], pages=[], config={};
+let articleSha='', pagesSha='', configSha='';
+let currentType='', currentIndex=-1;
+let tinyReady=false;
+
+// ── LOGIN ──
+async function doLogin(){
+  token=document.getElementById('tkn').value.trim();
+  repo=document.getElementById('repoIn').value.trim();
+  if(!token||!repo)return;
+  const btn=document.getElementById('loginBtn');
+  btn.innerHTML='<span class="spin"></span> Connecting…';
+  try{
+    await loadAll();
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('shell').style.display='flex';
+    document.getElementById('repoLabel').textContent=repo;
+    renderList('article');
+    renderList('page');
+    loadImages();
+    renderSettings();
+  }catch(e){
+    document.getElementById('loginErr').style.display='block';
+    btn.textContent='Sign In';
+  }
+}
+function doLogout(){
+  token=repo='';articles=[];pages=[];config={};
+  document.getElementById('shell').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('tkn').value='';
+  document.getElementById('loginBtn').textContent='Sign In';
+  document.getElementById('loginErr').style.display='none';
+}
+document.getElementById('tkn').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+// ── LOAD DATA ──
+async function apiGet(path){
+  const r=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,
+    {headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json'}});
+  if(!r.ok)throw new Error(r.status);
+  return r.json();
+}
+async function apiPut(path,content,sha,msg){
+  const r=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:msg,content:btoa(unescape(encodeURIComponent(content))),sha})
+  });
+  if(!r.ok){const e=await r.json();throw new Error(e.message||r.status);}
+  return r.json();
+}
+async function loadAll(){
+  const [a,p,c]=await Promise.all([apiGet('data/articles.json'),apiGet('data/pages.json'),apiGet('data/config.json')]);
+  articles=JSON.parse(atob(a.content.replace(/\n/g,'')));articleSha=a.sha;
+  pages=JSON.parse(atob(p.content.replace(/\n/g,'')));pagesSha=p.sha;
+  config=JSON.parse(atob(c.content.replace(/\n/g,'')));configSha=c.sha;
+}
+async function pushData(type,msg){
+  if(type==='article'){
+    const r=await apiGet('data/articles.json');articleSha=r.sha;
+    const res=await apiPut('data/articles.json',JSON.stringify(articles,null,2),articleSha,msg);
+    articleSha=res.content.sha;
+  } else if(type==='page'){
+    const r=await apiGet('data/pages.json');pagesSha=r.sha;
+    const res=await apiPut('data/pages.json',JSON.stringify(pages,null,2),pagesSha,msg);
+    pagesSha=res.content.sha;
+  } else if(type==='config'){
+    const r=await apiGet('data/config.json');configSha=r.sha;
+    const res=await apiPut('data/config.json',JSON.stringify(config,null,2),configSha,msg);
+    configSha=res.content.sha;
+  }
+}
+
+// ── PANELS ──
+function showPanel(name){
+  document.querySelectorAll('.panel,.panel-full').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  event.target.classList.add('active');
+  if(name==='images')loadImages();
+}
+
+// ── LIST ──
+let filters={article:'',page:''};
+function filterItems(type,q){filters[type]=q.toLowerCase();renderList(type);}
+function renderList(type){
+  const ul=document.getElementById(type+'-list');
+  const data=type==='article'?articles:pages;
+  const q=filters[type];
+  const filtered=data.filter(i=>(i.title+' '+(i.category||'')).toLowerCase().includes(q));
+  if(!filtered.length){ul.innerHTML='<li style="color:#444;font-size:.8rem;padding:.5rem">Nothing found</li>';return;}
+  ul.innerHTML=filtered.map(item=>{
+    const idx=data.indexOf(item);
+    const now=new Date();
+    const pub=item.publishDate?new Date(item.publishDate):null;
+    const badge=item.status==='draft'?'<span class="draft-badge">Draft</span>':pub&&pub>now?'<span class="schedule-badge">Scheduled</span>':'';
+    return`<li class="${idx===currentIndex&&currentType===type?'active':''}" onclick="editItem('${type}',${idx})">
+      ${item.title||'Untitled'}${badge}
+      <div class="item-sub">${item.category||item.slug||'—'}</div>
+    </li>`;
+  }).join('');
+}
+
+// ── EDITOR ──
+function slugify(t){return(t||'').toLowerCase().trim().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-');}
+
+function newItem(type){
+  currentType=type;currentIndex=-1;
+  const blank={title:'',slug:'',excerpt:'',body:'',status:'published',publishDate:'',featuredImage:'',featuredImageAlt:''};
+  if(type==='article')blank.category='',blank.categoryLabel='';
+  if(type==='page')blank.showInMenu=false;
+  renderEditor(type,blank,true);
+  renderList(type);
+}
+function editItem(type,i){
+  currentType=type;currentIndex=i;
+  const data=type==='article'?articles:pages;
+  renderEditor(type,data[i],false);
+  renderList(type);
+}
+
+function renderEditor(type,item,isNew){
+  const area=document.getElementById(type+'-editor');
+  const cats=[
+    {v:'ai',l:'AI'},{v:'security',l:'Security'},{v:'finance',l:'Finance'},
+    {v:'web-development',l:'Web Development'},{v:'review',l:'Reviews'},
+    {v:'make-money',l:'Make Money'},{v:'food',l:'Food'},{v:'health',l:'Health'},
+    {v:'education',l:'Education'},{v:'business',l:'Business'},{v:'science',l:'Science'},
+    {v:'crypto',l:'Crypto'},{v:'entertainment',l:'Entertainment'},{v:'world',l:'World'},
+    {v:'culture',l:'Culture'},{v:'disaster',l:'Disaster'},{v:'how-to',l:'How To'},
+    {v:'learning',l:'Learning'},{v:'wordpress',l:'WordPress'},{v:'seo',l:'SEO'},
+    {v:'personal-development',l:'Personal Development'},{v:'inspirational-stories',l:'Inspirational Stories'}
+  ];
+
+  const imgSrc=item.featuredImage?`https://raw.githubusercontent.com/${repo}/main/${item.featuredImage}`:'';
+
+  area.innerHTML=`
+    <div class="edit-section">
+      <h3>${isNew?'New '+type:'Edit '+type}</h3>
+      <div class="fld"><label>Title</label><input id="e_title" value="${esc(item.title)}" placeholder="Enter title…" oninput="autoSlug()" style="font-size:1rem;font-weight:600" /></div>
+      <div class="fld">
+        <label>Slug <span style="color:#555;font-weight:400;text-transform:none;letter-spacing:0">(leave blank to auto-generate from title)</span></label>
+        <input id="e_slug" value="${esc(item.slug)}" placeholder="auto-generated from title" />
+        <div style="font-size:.7rem;color:#555;margin-top:.25rem">URL: <span style="color:#e02020" id="slug-preview">${item.slug||'...'}</span>/</div>
+      </div>
+      <div class="fld"><label>Excerpt / Meta Description</label><input id="e_excerpt" value="${esc(item.excerpt)}" placeholder="Short description for search engines" /></div>
+    </div>
+
+    ${type==='article'?`<div class="edit-section">
+      <h3>Category</h3>
+      <div class="fld-row">
+        <div class="fld">
+          <label>Category <span style="color:#555;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <select id="e_category" onchange="syncCatLabel(this)">
+            <option value="">— No Category —</option>
+            ${cats.map(c=>`<option value="${c.v}" ${item.category===c.v?'selected':''}>${c.l}</option>`).join('')}
+          </select>
+        </div>
+        <div class="fld"><label>Category Label</label><input id="e_categoryLabel" value="${esc(item.categoryLabel)}" placeholder="Display name" /></div>
+      </div>
+    </div>`:''}
+
+    ${type==='page'?`<div class="edit-section">
+      <h3>Page Options</h3>
+      <div class="fld">
+        <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+          <input type="checkbox" id="e_showInMenu" ${item.showInMenu?'checked':''} style="width:auto" />
+          Show in navigation menu
+        </label>
+      </div>
+    </div>`:''}
+
+    <div class="edit-section">
+      <h3>Content</h3>
+      <div style="display:flex;gap:.5rem;margin-bottom:.7rem">
+        <button class="btn btn-ghost" style="padding:.3rem .8rem;font-size:.75rem" id="tab-visual" onclick="switchEditorTab('visual')">Visual</button>
+        <button class="btn btn-ghost" style="padding:.3rem .8rem;font-size:.75rem" id="tab-html" onclick="switchEditorTab('html')">HTML</button>
+      </div>
+      <div id="visual-wrap"><textarea id="e_body_tiny">${escHtml(item.body)}</textarea></div>
+      <div id="html-wrap" style="display:none"><div class="fld"><textarea id="e_body_html" style="min-height:350px;font-family:monospace;font-size:.78rem;background:#0a0a0a;color:#ccc;border-color:#2a2a2a">${escHtml(item.body)}</textarea></div></div>
+    </div>
+
+    <div class="edit-section">
+      <h3>Featured Image</h3>
+      <div class="img-zone" id="img-zone" onclick="triggerImgPick()">
+        ${imgSrc?`<img src="${imgSrc}" onerror="this.style.display='none'" />`:''}
+        <div class="img-zone-text"><strong>Click to upload or pick from library</strong>JPG, PNG, WebP</div>
+        <input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="uploadFeatured(event)" />
+      </div>
+      <div class="fld" style="margin-top:.6rem"><label>Image Path</label><input id="e_featuredImage" value="${esc(item.featuredImage)}" placeholder="images/filename.jpg" /></div>
+      <div class="fld"><label>Alt Text</label><input id="e_featuredImageAlt" value="${esc(item.featuredImageAlt)}" placeholder="Describe the image" /></div>
+      <button class="btn btn-ghost" style="margin-top:.4rem;padding:.35rem .8rem;font-size:.75rem" onclick="openLibraryPicker()">📂 Pick from Library</button>
+    </div>
+
+    <div class="edit-section">
+      <h3>Publishing</h3>
+      <div class="fld-row">
+        <div class="fld">
+          <label>Status</label>
+          <select id="e_status">
+            <option value="published" ${item.status!=='draft'?'selected':''}>Published</option>
+            <option value="draft" ${item.status==='draft'?'selected':''}>Draft</option>
+          </select>
+        </div>
+        <div class="fld">
+          <label>Publish Date <span style="color:#555;font-weight:400;text-transform:none;letter-spacing:0">(schedule for future)</span></label>
+          <input type="datetime-local" id="e_publishDate" value="${item.publishDate||''}" />
+        </div>
+      </div>
+    </div>
+
+    <div class="status" id="edit-status"></div>
+    <div class="edit-actions" style="margin-top:.5rem">
+      <button class="btn btn-primary" onclick="saveItem()">💾 Save & Publish</button>
+      ${!isNew?`<button class="btn btn-danger" onclick="deleteItem()">🗑 Delete</button>`:''}
+      <button class="btn btn-ghost" onclick="cancelEdit()">Cancel</button>
+    </div>
+  `;
+
+  // Init TinyMCE
+  if(window.tinymce){
+    try{tinymce.remove('#e_body_tiny');}catch(e){}
+    tinymce.init({
+      selector:'#e_body_tiny',skin:'oxide-dark',content_css:'dark',height:400,menubar:false,branding:false,
+      plugins:'lists link image code table',
+      toolbar:'undo redo | blocks | bold italic underline | bullist numlist | link table | code',
+      block_formats:'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4',
+      setup:ed=>{ed.on('init',()=>{tinyReady=true;});}
+    });
+  }
+  document.getElementById('tab-visual').classList.add('active');
+  autoSlug();
+}
+
+function autoSlug(){
+  const t=document.getElementById('e_title')?.value||'';
+  const s=document.getElementById('e_slug');
+  const pr=document.getElementById('slug-preview');
+  if(s&&!s.value&&pr)pr.textContent=slugify(t)||'...';
+  else if(pr)pr.textContent=s?.value||slugify(t)||'...';
+}
+
+function switchEditorTab(tab){
+  const tiny=document.getElementById('visual-wrap');
+  const html=document.getElementById('html-wrap');
+  const vBtn=document.getElementById('tab-visual');
+  const hBtn=document.getElementById('tab-html');
+  if(tab==='visual'){
+    const body=document.getElementById('e_body_html')?.value||'';
+    tiny.style.display='';html.style.display='none';
+    vBtn.style.background='#1e1e1e';vBtn.style.color='#fff';
+    hBtn.style.background='';hBtn.style.color='';
+    try{const ed=tinymce.get('e_body_tiny');if(ed)ed.setContent(body);}catch(e){}
+  } else {
+    const body=getBody();
+    tiny.style.display='none';html.style.display='';
+    hBtn.style.background='#1e1e1e';hBtn.style.color='#fff';
+    vBtn.style.background='';vBtn.style.color='';
+    const el=document.getElementById('e_body_html');
+    if(el)el.value=body;
+  }
+}
+
+function getBody(){
+  try{const ed=tinymce.get('e_body_tiny');if(ed&&document.getElementById('visual-wrap')?.style.display!=='none')return ed.getContent();}catch(e){}
+  return document.getElementById('e_body_html')?.value||document.getElementById('e_body_tiny')?.value||'';
+}
+
+function syncCatLabel(sel){
+  const m={ai:'AI',security:'Security',finance:'Finance','web-development':'Web Development',review:'Reviews','make-money':'Make Money',food:'Food',health:'Health',education:'Education',business:'Business',science:'Science',crypto:'Crypto',entertainment:'Entertainment',world:'World',culture:'Culture',disaster:'Disaster','how-to':'How To',learning:'Learning',wordpress:'WordPress',seo:'SEO','personal-development':'Personal Development','inspirational-stories':'Inspirational Stories'};
+  const el=document.getElementById('e_categoryLabel');
+  if(el&&sel.value)el.value=m[sel.value]||sel.value;
+  else if(el)el.value='';
+}
+
+async function saveItem(){
+  const title=document.getElementById('e_title')?.value?.trim()||'';
+  const slugInput=document.getElementById('e_slug')?.value?.trim()||'';
+  const finalSlug=slugInput||slugify(title);
+  if(!title){showEditStatus('Title is required.','fail');return;}
+
+  const data={
+    title,
+    slug:finalSlug,
+    excerpt:document.getElementById('e_excerpt')?.value?.trim()||'',
+    body:getBody(),
+    status:document.getElementById('e_status')?.value||'published',
+    publishDate:document.getElementById('e_publishDate')?.value||'',
+    featuredImage:document.getElementById('e_featuredImage')?.value?.trim()||'',
+    featuredImageAlt:document.getElementById('e_featuredImageAlt')?.value?.trim()||''
+  };
+  if(currentType==='article'){
+    data.category=document.getElementById('e_category')?.value||'';
+    data.categoryLabel=document.getElementById('e_categoryLabel')?.value?.trim()||'';
+  }
+  if(currentType==='page'){
+    data.showInMenu=document.getElementById('e_showInMenu')?.checked||false;
+  }
+
+  showEditStatus('<span class="spin"></span> Saving…','loading');
+  try{
+    if(currentType==='article'){
+      if(currentIndex===-1){articles.push(data);currentIndex=articles.length-1;}
+      else articles[currentIndex]=data;
+      await pushData('article','Update: '+title);
+    } else {
+      if(currentIndex===-1){pages.push(data);currentIndex=pages.length-1;}
+      else pages[currentIndex]=data;
+      await pushData('page','Update page: '+title);
+    }
+    renderList(currentType);
+    showEditStatus('✅ Saved! Build running (~1 min)…','ok');
+  }catch(e){
+    showEditStatus('❌ Save failed: '+e.message,'fail');
+  }
+}
+
+async function deleteItem(){
+  const data=currentType==='article'?articles:pages;
+  const title=data[currentIndex]?.title||'this item';
+  if(!confirm('Delete "'+title+'"? Cannot be undone.'))return;
+  try{
+    data.splice(currentIndex,1);
+    await pushData(currentType,'Delete: '+title);
+    currentIndex=-1;
+    renderList(currentType);
+    cancelEdit();
+  }catch(e){alert('Delete failed: '+e.message);}
+}
+
+function cancelEdit(){
+  currentIndex=-1;currentType='';
+  ['article-editor','page-editor'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#333;font-size:.9rem">Select an item or create a new one</div>';
+  });
+  renderList('article');renderList('page');
+}
+
+function showEditStatus(msg,type){
+  const el=document.getElementById('edit-status');
+  if(!el)return;
+  el.innerHTML=msg;el.className='status '+type;
+  if(type==='ok')setTimeout(()=>{el.className='status';},5000);
+}
+
+// ── IMAGES ──
+async function loadImages(){
+  const lib=document.getElementById('img-library');
+  if(!lib)return;
+  lib.innerHTML='<div style="color:#444;font-size:.8rem">Loading…</div>';
+  try{
+    const files=await apiGet('images');
+    const imgs=files.filter(f=>/\.(jpg|jpeg|png|webp|gif|svg)$/i.test(f.name));
+    if(!imgs.length){lib.innerHTML='<div style="color:#444;font-size:.8rem">No images yet. Upload some!</div>';return;}
+    lib.innerHTML=imgs.map(f=>`
+      <div class="img-lib-item">
+        <img src="https://raw.githubusercontent.com/${repo}/main/images/${f.name}" loading="lazy" />
+        <span>${f.name}</span>
+        <button class="img-del" title="Delete" onclick="deleteImage('${f.name}','${f.sha}',this)">×</button>
+      </div>`).join('');
+  }catch(e){lib.innerHTML='<div style="color:#555;font-size:.8rem">Could not load images.</div>';}
+}
+
+async function uploadImages(event){
+  const files=[...event.target.files];
+  if(!files.length)return;
+  const lib=document.getElementById('img-library');
+  for(const file of files){
+    const reader=new FileReader();
+    await new Promise(resolve=>{
+      reader.onload=async e=>{
+        const b64=e.target.result.split(',')[1];
+        const name=file.name.replace(/\s+/g,'-').toLowerCase();
+        try{
+          let sha='';
+          try{const ex=await apiGet('images/'+name);sha=ex.sha;}catch(e){}
+          const body={message:'Upload: '+name,content:b64};
+          if(sha)body.sha=sha;
+          await fetch(`https://api.github.com/repos/${repo}/contents/images/${name}`,{
+            method:'PUT',headers:{Authorization:`token ${token}`,'Content-Type':'application/json'},
+            body:JSON.stringify(body)
+          });
+        }catch(e){console.error(e);}
+        resolve();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  setTimeout(loadImages,1500);
+}
+
+async function deleteImage(name,sha,btn){
+  if(!confirm('Delete '+name+'?'))return;
+  try{
+    await fetch(`https://api.github.com/repos/${repo}/contents/images/${name}`,{
+      method:'DELETE',headers:{Authorization:`token ${token}`,'Content-Type':'application/json'},
+      body:JSON.stringify({message:'Delete image: '+name,sha})
+    });
+    btn.closest('.img-lib-item').remove();
+  }catch(e){alert('Delete failed.');}
+}
+
+function triggerImgPick(){document.getElementById('img-file-input')?.click();}
+
+async function uploadFeatured(event){
+  const file=event.target.files[0];if(!file)return;
+  showEditStatus('<span class="spin"></span> Uploading image…','loading');
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const b64=e.target.result.split(',')[1];
+    const name=file.name.replace(/\s+/g,'-').toLowerCase();
+    try{
+      let sha='';
+      try{const ex=await apiGet('images/'+name);sha=ex.sha;}catch(e){}
+      const body={message:'Upload: '+name,content:b64};
+      if(sha)body.sha=sha;
+      await fetch(`https://api.github.com/repos/${repo}/contents/images/${name}`,{
+        method:'PUT',headers:{Authorization:`token ${token}`,'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+      const el=document.getElementById('e_featuredImage');
+      const alt=document.getElementById('e_featuredImageAlt');
+      if(el)el.value='images/'+name;
+      if(alt&&!alt.value)alt.value=file.name.replace(/\.[^.]+$/,'').replace(/[-_]/g,' ');
+      const zone=document.getElementById('img-zone');
+      if(zone){zone.innerHTML=`<img src="${e.target.result}" style="max-width:100%;max-height:160px;border-radius:7px" /><div class="img-zone-text">Click to change</div><input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="uploadFeatured(event)" />`;}
+      showEditStatus('✅ Image uploaded!','ok');
+    }catch(err){showEditStatus('❌ Upload failed.','fail');}
+  };
+  reader.readAsDataURL(file);
+}
+
+function openLibraryPicker(){
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:#000a;z-index:9999;display:flex;align-items:center;justify-content:center';
+  modal.innerHTML=`<div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:1.5rem;width:90%;max-width:700px;max-height:80vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h3 style="font-size:.9rem;font-weight:700">Pick from Library</h3>
+      <button onclick="this.closest('div[style]').remove()" style="background:none;border:none;color:#aaa;font-size:1.2rem;cursor:pointer">×</button>
+    </div>
+    <div class="img-library" id="modal-lib">Loading…</div>
+  </div>`;
+  document.body.appendChild(modal);
+  apiGet('images').then(files=>{
+    const imgs=files.filter(f=>/\.(jpg|jpeg|png|webp|gif|svg)$/i.test(f.name));
+    document.getElementById('modal-lib').innerHTML=imgs.map(f=>`
+      <div class="img-lib-item" onclick="pickImage('images/${f.name}','${f.name}');this.closest('div[style*=fixed]').remove()">
+        <img src="https://raw.githubusercontent.com/${repo}/main/images/${f.name}" loading="lazy" />
+        <span>${f.name}</span>
+      </div>`).join('');
+  }).catch(()=>{document.getElementById('modal-lib').textContent='Could not load.';});
+}
+
+function pickImage(path,name){
+  const el=document.getElementById('e_featuredImage');
+  const alt=document.getElementById('e_featuredImageAlt');
+  const zone=document.getElementById('img-zone');
+  if(el)el.value=path;
+  if(alt&&!alt.value)alt.value=name.replace(/\.[^.]+$/,'').replace(/[-_]/g,' ');
+  if(zone){zone.innerHTML=`<img src="https://raw.githubusercontent.com/${repo}/main/${path}" style="max-width:100%;max-height:160px;border-radius:7px" /><div class="img-zone-text">Click to change</div><input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="uploadFeatured(event)" />`;}
+}
+
+// ── SETTINGS ──
+function renderSettings(){
+  if(!config.site)return;
+  const f=document.getElementById('settings-form');
+  f.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div class="edit-section"><h3>Site Info</h3>
+        <div class="fld"><label>Site Name</label><input id="s_name" value="${esc(config.site.name)}" /></div>
+        <div class="fld"><label>Tagline</label><input id="s_tagline" value="${esc(config.site.tagline)}" /></div>
+        <div class="fld"><label>Site URL</label><input id="s_url" value="${esc(config.site.url)}" /></div>
+        <div class="fld"><label>Logo URL</label><input id="s_logo" value="${esc(config.site.logo)}" /></div>
+        <div class="fld"><label>AdSense ID</label><input id="s_adsense" value="${esc(config.site.adsenseId)}" /></div>
+        <div class="fld"><label>Google Analytics ID</label><input id="s_ga" value="${esc(config.site.googleAnalytics||'')}" /></div>
+      </div>
+      <div class="edit-section"><h3>Design</h3>
+        <div class="fld"><label>Primary Color</label><input type="color" id="s_color" value="${config.design.colorPrimary}" style="height:38px;padding:2px" /></div>
+        <div class="fld"><label>Display Font</label><input id="s_fontDisplay" value="${esc(config.design.fontDisplay)}" /></div>
+        <div class="fld"><label>Body Font</label><input id="s_fontBody" value="${esc(config.design.fontBody)}" /></div>
+      </div>
+      <div class="edit-section"><h3>Social Links</h3>
+        <div class="fld"><label>Facebook</label><input id="s_fb" value="${esc(config.social.facebook)}" /></div>
+        <div class="fld"><label>Twitter / X</label><input id="s_tw" value="${esc(config.social.twitter)}" /></div>
+        <div class="fld"><label>Instagram</label><input id="s_ig" value="${esc(config.social.instagram)}" /></div>
+      </div>
+      <div class="edit-section"><h3>Navigation</h3>
+        <div id="nav-editor">${(config.nav||[]).map((n,i)=>`
+          <div class="nav-editor-row">
+            <input value="${esc(n.label)}" placeholder="Label" oninput="config.nav[${i}].label=this.value" />
+            <input value="${esc(n.url)}" placeholder="URL (e.g. category/ai/)" oninput="config.nav[${i}].url=this.value" />
+            <button class="btn btn-danger" style="padding:.3rem .6rem;font-size:.75rem" onclick="removeNav(${i})">×</button>
+          </div>`).join('')}
+        </div>
+        <button class="btn btn-ghost" style="padding:.35rem .8rem;font-size:.75rem;margin-top:.4rem" onclick="addNav()">+ Add Nav Item</button>
+      </div>
+    </div>`;
+}
+
+function addNav(){
+  config.nav=config.nav||[];
+  config.nav.push({label:'',url:''});
+  renderSettings();
+}
+function removeNav(i){config.nav.splice(i,1);renderSettings();}
+
+async function saveSettings(){
+  config.site.name=document.getElementById('s_name')?.value||config.site.name;
+  config.site.tagline=document.getElementById('s_tagline')?.value||config.site.tagline;
+  config.site.url=document.getElementById('s_url')?.value||config.site.url;
+  config.site.logo=document.getElementById('s_logo')?.value||config.site.logo;
+  config.site.adsenseId=document.getElementById('s_adsense')?.value||config.site.adsenseId;
+  config.site.googleAnalytics=document.getElementById('s_ga')?.value||'';
+  config.design.colorPrimary=document.getElementById('s_color')?.value||config.design.colorPrimary;
+  config.design.fontDisplay=document.getElementById('s_fontDisplay')?.value||config.design.fontDisplay;
+  config.design.fontBody=document.getElementById('s_fontBody')?.value||config.design.fontBody;
+  config.social.facebook=document.getElementById('s_fb')?.value||'';
+  config.social.twitter=document.getElementById('s_tw')?.value||'';
+  config.social.instagram=document.getElementById('s_ig')?.value||'';
+  const st=document.getElementById('settings-status');
+  st.innerHTML='<span class="spin"></span> Saving…';st.className='status loading';
+  try{
+    await pushData('config','Update site settings');
+    st.textContent='✅ Saved!';st.className='status ok';
+    setTimeout(()=>{st.className='status';},4000);
+  }catch(e){st.textContent='❌ '+e.message;st.className='status fail';}
+}
+
+// ── WP CONVERTER ──
+function convertWP(){
+  const input=document.getElementById('wp-input')?.value||'';
+  let out=input
+    .replace(/<!--\s*\/?wp:[^\-].*?-->/gs,'')
+    .replace(/<figure[^>]*class="[^"]*wp-block-table[^"]*"[^>]*>([\s\S]*?)<\/figure>/g,'$1')
+    .replace(/<figure[^>]*class="[^"]*wp-block-embed[^"]*"[^>]*>[\s\S]*?(https:\/\/(?:www\.)?youtu(?:\.be|be\.com)[^\s"<]+)[\s\S]*?<\/figure>/g,(m,url)=>{
+      const id=url.match(/(?:v=|\/embed\/|youtu\.be\/)([a-zA-Z0-9_-]{11})/)?.[1];
+      return id?`<div class="video-embed"><iframe src="https://www.youtube.com/embed/${id}" loading="lazy" allowfullscreen></iframe></div>`:'';
+    })
+    .replace(/<figure[^>]*>([\s\S]*?)<figcaption[^>]*>[\s\S]*?<\/figcaption>([\s\S]*?)<\/figure>/g,'$1$2')
+    .replace(/<figure[^>]*>([\s\S]*?)<\/figure>/g,'$1')
+    .replace(/<details[^>]*>\s*<summary>(.*?)<\/summary>([\s\S]*?)<\/details>/g,'<h3>$1</h3>$2')
+    .replace(/<div[^>]*class="[^"]*wp-block-group[^"]*"[^>]*>/g,'')
+    .replace(/class="(?:wp-block-[^"]*|has-[^"]*|is-style-[^"]*)"/g,'')
+    .replace(/<\/?div>/g,'')
+    .replace(/\n{3,}/g,'\n\n')
+    .trim();
+  const el=document.getElementById('wp-output');
+  if(el)el.value=out;
+}
+
+// ── UTILS ──
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
+function escHtml(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+</body>
+</html>

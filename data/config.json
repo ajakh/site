@@ -1,0 +1,66 @@
+{
+  "site": {
+    "name": "IT Charging",
+    "tagline": "News, guides, and reviews covering IT, cybersecurity, AI, and crypto.",
+    "url": "https://www.itcharging.com",
+    "logo": "https://www.itcharging.com/wp-content/uploads/2025/05/logo-itc.png",
+    "favicon": "https://www.itcharging.com/wp-content/uploads/2025/05/logo-itc.png",
+    "adsenseId": "ca-pub-8263822632631955",
+    "googleAnalytics": ""
+  },
+  "design": {
+    "colorPrimary": "#e02020",
+    "colorInk": "#111111",
+    "colorSlate": "#6b7280",
+    "colorPaper": "#f9f9f9",
+    "colorRule": "#e5e7eb",
+    "colorWhite": "#ffffff",
+    "fontDisplay": "Space Grotesk",
+    "fontBody": "Inter",
+    "fontMono": "IBM Plex Mono"
+  },
+  "nav": [
+    { "label": "AI", "url": "category/ai/" },
+    { "label": "Security", "url": "category/security/" },
+    { "label": "Make Money", "url": "category/make-money/" },
+    { "label": "Web Dev", "url": "category/web-development/" },
+    { "label": "Reviews", "url": "category/review/" },
+    { "label": "Finance", "url": "category/finance/" }
+  ],
+  "social": {
+    "facebook": "https://web.facebook.com/itcharging",
+    "twitter": "https://x.com/Itchargingg",
+    "instagram": "https://www.instagram.com/itchargingg/"
+  },
+  "footer": {
+    "columns": [
+      {
+        "title": "Categories",
+        "links": [
+          { "label": "AI", "url": "category/ai/" },
+          { "label": "Security", "url": "category/security/" },
+          { "label": "Web Dev", "url": "category/web-development/" },
+          { "label": "Reviews", "url": "category/review/" },
+          { "label": "Finance", "url": "category/finance/" },
+          { "label": "Make Money", "url": "category/make-money/" }
+        ]
+      },
+      {
+        "title": "Company",
+        "links": [
+          { "label": "Our Team", "url": "our-team/" },
+          { "label": "History", "url": "history/" },
+          { "label": "Careers", "url": "careers/" },
+          { "label": "Contact Us", "url": "contact-us/" }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          { "label": "Privacy Policy", "url": "privacy-policy/" },
+          { "label": "Terms and Conditions", "url": "terms-and-conditions/" }
+        ]
+      }
+    ]
+  }
+}
