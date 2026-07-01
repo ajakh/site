@@ -9,5 +9,16 @@
     "featuredImage": "",
     "featuredImageAlt": "",
     "showInMenu": false
+  },
+  {
+    "title": "test bro test",
+    "slug": "test",
+    "excerpt": "",
+    "body": "",
+    "status": "published",
+    "publishDate": "",
+    "featuredImage": "",
+    "featuredImageAlt": "",
+    "showInMenu": false
   }
 ]
