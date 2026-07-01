@@ -34,5 +34,17 @@
     "featuredImageAlt": "",
     "category": "",
     "categoryLabel": ""
+  },
+  {
+    "title": "this new shit",
+    "slug": "this-new-shit",
+    "excerpt": "",
+    "body": "",
+    "status": "published",
+    "publishDate": "",
+    "featuredImage": "images/untitled.jpeg",
+    "featuredImageAlt": "untitled",
+    "category": "",
+    "categoryLabel": ""
   }
 ]
