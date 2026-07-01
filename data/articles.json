@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "title": "testing bro arti",
+    "slug": "testing-bro-arti",
+    "excerpt": "",
+    "body": "<p>sfsfas khalo</p>",
+    "status": "published",
+    "publishDate": "",
+    "featuredImage": "",
+    "featuredImageAlt": "",
+    "category": "food",
+    "categoryLabel": "Food"
+  }
+]
